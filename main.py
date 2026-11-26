@@ -10,12 +10,10 @@ import sys
 
 
 def build_line():
-    chunks = [
-        "The Roombas",
-        " \u2014 ",
-        "hit single 'We Clean Up (Literally)'",
-    ]
-    return "".join(chunks)
+    band = "The Roombas"
+    dash = " \u2014 "
+    single = "hit single 'We Clean Up (Literally)'"
+    return band + dash + single
 
 
 def check(line):
