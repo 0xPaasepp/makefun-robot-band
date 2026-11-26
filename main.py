@@ -1,26 +1,38 @@
-#!/usr/bin/env python3
-# Robot band entry: one funny name for a band made of robots, plus a few
-# words on its hit song, to /output/entry.txt.
-# Pure standard library. The gate wants 1-200 characters, a single line.
-# The joke: a band of Roombas, whose hit single is "We Clean Up
-# (Literally)" — stage slang for killing it, and also literally what
-# a Roomba does. The name lands on first read, the song line adds the
-# second laugh and fits the band exactly.
+#!/usr/bin/python3
+"""Robot-band naming entry.
 
-from pathlib import Path
+A vacuum-cleaner band, and its chart-topper: the gag is that the
+single's title doubles as a literal description of the job.
+The program emits exactly one line to /output/entry.txt.
+"""
 
-LINE = "The Roombas \u2014 hit single 'We Clean Up (Literally)'"
-TARGET = Path("/output/entry.txt")
+import sys
 
 
-def run() -> None:
-    text = LINE.strip()
-    assert 0 < len(text) <= 200, "entry must be 1-200 characters"
-    assert "\n" not in text and "\r" not in text, "entry must be one line"
-    TARGET.parent.mkdir(parents=True, exist_ok=True)
-    TARGET.write_text(text, encoding="utf-8")
-    print(text)
+def build_line():
+    chunks = [
+        "The Roombas",
+        " \u2014 ",
+        "hit single 'We Clean Up (Literally)'",
+    ]
+    return "".join(chunks)
+
+
+def check(line):
+    if not line or len(line) > 200:
+        raise ValueError("entry must be 1-200 characters")
+    if any(ch in line for ch in "\r\n"):
+        raise ValueError("entry must be a single line")
+
+
+def main():
+    line = build_line().strip()
+    check(line)
+    with open("/output/entry.txt", "w", encoding="utf-8") as handle:
+        handle.write(line)
+    sys.stdout.write(line + "\n")
+    return 0
 
 
 if __name__ == "__main__":
-    run()
+    sys.exit(main())
